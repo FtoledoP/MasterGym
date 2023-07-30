@@ -8,11 +8,11 @@
     </form>
 
     <div class="row mt-3">
-        <div class="col-sm-3">
+        <div class="col-sm-3" *ngFor="let cliente of clientes">
             <div class="card">
-                <img src="https://cdn-icons-png.flaticon.com/512/1077/1077114.png" class="card-img-top" alt="...">
+                <img [src]="cliente.imgUrl" class="card-img-top" >
                 <div class="card-body">
-                    <h5 class="card-title">Juan martinez</h5>
+                    <h5 class="card-title">{{cliente.nombre}} {{cliente.apellido}}</h5>
                     <a href="#" class="card-link">Editar</a>
                     <a href="#" class="card-link text-danger">Desactivar</a>
                 </div>
