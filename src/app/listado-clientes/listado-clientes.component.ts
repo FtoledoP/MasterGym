@@ -14,9 +14,25 @@ export class ListadoClientesComponent {
   }
 
   ngOnInit() {
-    this.leerClientes().subscribe((resultado) => {
-      this.clientes = resultado
+    // this.leerClientes().subscribe((resultado) => {
+    //   console.log(resultado)
+    //   this.clientes = resultado
+    // })
+
+
+    this.clientes.length = 0
+    const coleccionClientes = collection(this.firestore, 'clientes');
+    collectionData(coleccionClientes, {idField: 'id'}).subscribe((resultado) =>{
+      console.log(resultado)
+
+      for (let item of resultado){
+        console.log(item['id']);
+        
+      }
+
     })
+
+
   }
 
   leerClientes(): Observable<any[]>{
