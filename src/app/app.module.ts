@@ -21,13 +21,15 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { EncabezadoComponent } from './encabezado/encabezado.component';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { ListadoClientesComponent } from './listado-clientes/listado-clientes.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    EncabezadoComponent
+    EncabezadoComponent,
+    ListadoClientesComponent
   ],
   imports: [
     BrowserModule,
