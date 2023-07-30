@@ -1,5 +1,12 @@
-<div class="alert alert-primary" role="alert">
-  A simple primary alert—check it out!
-</div>
+<div *ngIf="usuario && !cargando; else showLogin">
 
-<router-outlet></router-outlet>
+  <app-encabezado></app-encabezado>
+  <router-outlet></router-outlet>
+</div>
+<ng-template #showLogin>
+  <div *ngIf="cargando" class="text-center">
+    
+  </div>
+  <app-login *ngIf="!cargando"></app-login>
+</ng-template>
+
