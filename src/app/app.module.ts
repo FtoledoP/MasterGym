@@ -22,6 +22,7 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { EncabezadoComponent } from './encabezado/encabezado.component';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ListadoClientesComponent } from './listado-clientes/listado-clientes.component';
+import { NgxSpinnerModule } from "ngx-spinner";
 
 
 @NgModule({
@@ -50,7 +51,8 @@ import { ListadoClientesComponent } from './listado-clientes/listado-clientes.co
     ReactiveFormsModule,
     BrowserAnimationsModule,
     BsDropdownModule.forRoot(),
-    FormsModule
+    FormsModule,
+    NgxSpinnerModule
   ],
   providers: [
     ScreenTrackingService,UserTrackingService
