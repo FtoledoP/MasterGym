@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "mastergym-d2024": {
+      "hosting": {
+        "mastergym": [
+          "mastergym-d2024"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "mastergym-d2024"
+  }
+}
