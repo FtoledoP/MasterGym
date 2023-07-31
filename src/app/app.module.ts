@@ -25,6 +25,8 @@ import { ListadoClientesComponent } from './listado-clientes/listado-clientes.co
 import { NgxSpinnerModule } from "ngx-spinner";
 import { AgregarClienteComponent } from './agregar-cliente/agregar-cliente.component';
 import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
+import { MensajesService } from './services/mensajes.service';
+import { PreciosComponent } from './precios/precios.component';
 
 
 @NgModule({
@@ -33,7 +35,8 @@ import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
     LoginComponent,
     EncabezadoComponent,
     ListadoClientesComponent,
-    AgregarClienteComponent
+    AgregarClienteComponent,
+    PreciosComponent
   ],
   imports: [
     BrowserModule,
@@ -59,7 +62,8 @@ import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
     ProgressbarModule.forRoot()
   ],
   providers: [
-    ScreenTrackingService,UserTrackingService
+    ScreenTrackingService,UserTrackingService,
+    MensajesService
   ],
   bootstrap: [AppComponent]
 })

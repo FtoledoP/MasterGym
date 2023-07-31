@@ -6,6 +6,7 @@ import { Firestore } from '@angular/fire/firestore';
 import { addDoc, collection, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { ActivatedRoute } from '@angular/router';
 import Swal from 'sweetalert2'
+import { MensajesService } from '../services/mensajes.service';
 
 @Component({
   selector: 'app-agregar-cliente',
@@ -22,7 +23,8 @@ export class AgregarClienteComponent {
   constructor(private fb: FormBuilder, 
     private storage: Storage, 
     private db: Firestore,
-    private activeRoute: ActivatedRoute) {}
+    private activeRoute: ActivatedRoute,
+    private msj: MensajesService) {}
 
   ngOnInit() {    
 
@@ -64,12 +66,7 @@ export class AgregarClienteComponent {
     console.log(this.formularioCliente.value);
     addDoc(collection(this.db, 'clientes'), this.formularioCliente.value)
     .then((resultado) =>{
-      Swal.fire({
-        title: 'Agregado',
-        text: 'Se agrego correctamente',
-        icon: 'success',
-        confirmButtonText: 'OK'
-      })
+      this.msj.mensajeCorrecto("Agregar", "Se agrego correctamente")
     })
   }
 
@@ -80,21 +77,11 @@ export class AgregarClienteComponent {
     const docRef = doc(this.db, 'clientes', this.id)
     updateDoc(docRef, this.formularioCliente.value)
     .then((resultado) => {
-      Swal.fire({
-        title: 'Editado',
-        text: 'Cliente editado correctamente',
-        icon: 'success',
-        confirmButtonText: 'OK'
-      })
+      this.msj.mensajeCorrecto("Editado", "Se edito correctamente")
       
     })
     .catch(()=>{
-      Swal.fire({
-        title: 'Error!',
-        text: 'Ocurrio un error al actualizar el cliente',
-        icon: 'error',
-        confirmButtonText: 'OK'
-      })
+      this.msj.mensajeError("Error!", "Ocurrio un error al actualizar el cliente")
     })
   }
 
