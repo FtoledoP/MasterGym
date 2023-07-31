@@ -3,7 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Storage } from '@angular/fire/storage';
 import { ref, uploadBytesResumable, UploadTaskSnapshot, getDownloadURL } from 'firebase/storage';
 import { Firestore } from '@angular/fire/firestore';
-import { addDoc, collection } from 'firebase/firestore';
+import { addDoc, collection, doc, getDoc, updateDoc } from 'firebase/firestore';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-agregar-cliente',
@@ -14,10 +15,37 @@ export class AgregarClienteComponent {
   formularioCliente: FormGroup = {} as FormGroup;
   porcentajeSubida: number = 0;
   urlImagen:string =""
+  esEditable:boolean = false
+  id:string =""
 
-  constructor(private fb: FormBuilder, private storage: Storage, private db: Firestore) {}
+  constructor(private fb: FormBuilder, 
+    private storage: Storage, 
+    private db: Firestore,
+    private activeRoute: ActivatedRoute) {}
 
-  ngOnInit() {
+  ngOnInit() {    
+
+    this.id = this.activeRoute.snapshot.params['clienteID']
+    if(this.id != undefined){
+      this.esEditable = true
+      const docRef = doc(this.db, 'clientes', this.activeRoute.snapshot.params['clienteID'])
+      getDoc(docRef)
+      .then(cliente =>{
+        this.formularioCliente.setValue({
+          nombre: cliente.data()?.['nombre'],
+          apellido: cliente.data()?.['apellido'],
+          correo: cliente.data()?.['correo'],
+          cedula: cliente.data()?.['cedula'],
+          fechaNacimiento: new Date(cliente.data()?.['fechaNacimiento'].seconds * 1000).toISOString().substring(0, 10),
+          telefono: cliente.data()?.['telefono'],
+          imgUrl: ''
+        })
+
+        this.urlImagen = cliente.data()?.['imgUrl']
+    })
+    }
+    
+
     this.formularioCliente = this.fb.group({
       nombre: ['', Validators.required],
       apellido: ['', Validators.required],
@@ -37,6 +65,14 @@ export class AgregarClienteComponent {
     .then((resultado) =>{
       console.log("Registrado");
     })
+  }
+
+  editar(){
+    this.formularioCliente.value.imgUrl = this.urlImagen
+    this.formularioCliente.value.fechaNacimiento = new Date(this.formularioCliente.value.fechaNacimiento)
+
+    const docRef = doc(this.db, 'clientes', this.id)
+    updateDoc(docRef, this.formularioCliente.value)
   }
 
   subirImagen(evento: any) {

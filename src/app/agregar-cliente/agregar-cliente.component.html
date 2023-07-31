@@ -74,7 +74,8 @@
             <div class="col-sm-12 mt-3">
                 <progressbar [value]="porcentajeSubida" type="danger" [striped]="true">{{porcentajeSubida}}%</progressbar>
             </div>
-            <button class="btn btn-primary mt-5" [disabled]="formularioCliente.invalid" (click)="agregar()">Agregar</button>
+            <button *ngIf="!esEditable" class="btn btn-primary mt-5" [disabled]="formularioCliente.invalid && !urlImagen" (click)="agregar()">Agregar</button>
+            <button *ngIf="esEditable" class="btn btn-primary mt-5" [disabled]="formularioCliente.invalid && !urlImagen" (click)="editar()">Editar</button>
         </div>
     </form>
 </div>
