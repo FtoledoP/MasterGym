@@ -72,7 +72,7 @@
                 </div>
             </div>
             <div class="col-sm-12 mt-3">
-                <progressbar [value]="22" type="danger" [striped]="true">22%</progressbar>
+                <progressbar [value]="porcentajeSubida" type="danger" [striped]="true">{{porcentajeSubida}}%</progressbar>
             </div>
             <button class="btn btn-primary mt-5" [disabled]="formularioCliente.invalid" (click)="agregar()">Agregar</button>
         </div>

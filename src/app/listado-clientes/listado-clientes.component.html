@@ -10,7 +10,7 @@
     <div class="row mt-3">
         <div class="col-sm-3" *ngFor="let cliente of clientes">
             <div class="card">
-                <img [src]="cliente.imgUrl" class="card-img-top" >
+                <img [src]="cliente.imgUrl" class="card-img-top imgCliente" >
                 <div class="card-body">
                     <p>{{cliente.id}}</p>
                     <h5 class="card-title">{{cliente.nombre}} {{cliente.apellido}}</h5>
