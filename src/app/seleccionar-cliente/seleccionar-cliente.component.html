@@ -6,10 +6,10 @@
     <div class="form-group mt-3" *ngIf="nombre">
         <label for="">Cliente</label>
         <div class="row">
-            <div class="col-sm-10">
+            <div class="col-sm-9">
                 <input [(ngModel)]="nombre" disabled type="text" class="form-control">
             </div>
-            <div class="col-sm-2">
+            <div class="col-sm-3">
                 <button class="btn btn-danger" (click)="cancelarCliente()">Cancelar</button>
             </div>
         </div>

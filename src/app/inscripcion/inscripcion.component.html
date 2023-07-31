@@ -1,10 +1,48 @@
 <div class="container mt-5">
     <div class="row">
         <div class="col-sm-6">
-            <app-seleccionar-cliente></app-seleccionar-cliente>
+            <app-seleccionar-cliente
+            [nombre]="clienteSeleccionado.nombre" 
+            (seleccionoCliente)="asignarCliente($event)"
+            (canceloCliente)="eliminarCliente()">
+        </app-seleccionar-cliente>
+
+        <div class="form-control">
+            <label for="">Precio</label>
+            <select (change)="seleccionarPrecio($event)" class="form-control" name="" id="">
+                <option [value]="null">Seleccione un precio</option>
+                <option *ngFor="let precio of precios" [value]="precio.id">{{precio.nombre}}</option>
+            </select>
+        </div>
+
+        <div class="mt-3">
+            <label for="">Fecha Inicio</label>
+            <input [value]="inscripcion.fecha | date" class="form-control" disabled type="text" name="" id="">
+        </div>
+        <div class="">
+            <label for="">Fecha Finaliza</label>
+            <input [value]="inscripcion.fechaFinal | date" class="form-control" disabled type="text" name="" id="">
+        </div>
+        <div class="">
+            <label for="">Subtotal</label>
+            <input [value]="inscripcion.subTotal" class="form-control" disabled type="number" name="" id="">
+        </div>
+        <div class="">
+            <label for="">ISV</label>
+            <input [value]="inscripcion.isv" class="form-control" disabled type="number" name="" id="">
+        </div>
+        <div class="">
+            <label for="">Total</label>
+            <input [value]="inscripcion.total" class="form-control" disabled type="number" name="" id="">
+        </div>
+        <br>
+
+        <button class="btn btn-primary" (click)="guardar()">Guardar</button>
         </div>
         <div class="col-sm-6">
-            segundos
+            <div *ngIf="clienteSeleccionado.imgUrl" class="imgCliente">
+                <img [src]="clienteSeleccionado.imgUrl" alt="">
+            </div>
         </div>
     </div>
 </div>

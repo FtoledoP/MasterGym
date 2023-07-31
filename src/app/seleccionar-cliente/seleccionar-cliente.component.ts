@@ -57,12 +57,14 @@ export class SeleccionarClienteComponent {
     this.clientes.forEach((cliente)=>{
       cliente.visible = false
     })
-    console.log(cliente);
+
+    this.seleccionoCliente.emit(cliente)
     
   }
 
   cancelarCliente(){
     this.nombre = '';
+    this.canceloCliente.emit()
   }
 
 }
