@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore';
 import { Cliente } from '../models/cliente';
 import { DocumentSnapshot, collection, getDocs, query } from 'firebase/firestore';
@@ -10,6 +10,9 @@ import { DocumentSnapshot, collection, getDocs, query } from 'firebase/firestore
 })
 export class SeleccionarClienteComponent {
   clientes:Cliente[] = new Array<Cliente>();
+  @Input('nombre')nombre!:string 
+  @Output('seleccionoCliente')seleccionoCliente = new EventEmitter();
+  @Output('canceloCliente')canceloCliente = new EventEmitter()
 
   constructor(private db: Firestore){
 
@@ -47,6 +50,19 @@ export class SeleccionarClienteComponent {
       }
     })
     
+  }
+
+  seleccionarCliente(cliente:Cliente){
+    this.nombre = cliente.nombre + ' ' + cliente.apellido
+    this.clientes.forEach((cliente)=>{
+      cliente.visible = false
+    })
+    console.log(cliente);
+    
+  }
+
+  cancelarCliente(){
+    this.nombre = '';
   }
 
 }
