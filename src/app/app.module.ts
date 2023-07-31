@@ -23,6 +23,7 @@ import { EncabezadoComponent } from './encabezado/encabezado.component';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ListadoClientesComponent } from './listado-clientes/listado-clientes.component';
 import { NgxSpinnerModule } from "ngx-spinner";
+import { AgregarClienteComponent } from './agregar-cliente/agregar-cliente.component';
 
 
 @NgModule({
@@ -30,7 +31,8 @@ import { NgxSpinnerModule } from "ngx-spinner";
     AppComponent,
     LoginComponent,
     EncabezadoComponent,
-    ListadoClientesComponent
+    ListadoClientesComponent,
+    AgregarClienteComponent
   ],
   imports: [
     BrowserModule,

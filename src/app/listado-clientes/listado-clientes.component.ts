@@ -15,10 +15,10 @@ export class ListadoClientesComponent {
 
   ngOnInit() {
 
-    this.leerClientes().subscribe((resultado) => {
-      //console.log(resultado)
-      this.clientes = resultado
-    })
+    // this.leerClientes().subscribe((resultado) => {
+    //   console.log(resultado)
+    //   this.clientes = resultado
+    // })
 
     this.clientes.length = 0;
     const coleccionClientes = collection(this.firestore, 'clientes');
@@ -26,8 +26,12 @@ export class ListadoClientesComponent {
 
     getDocs(q).then((querySnapshot) => {
       querySnapshot.forEach((doc: DocumentSnapshot<any>) => {
-        //console.log(doc.data);
-        console.log(doc.ref);
+
+        let cliente = doc.data()
+        cliente.id = doc.id
+        cliente.ref = doc.ref
+        this.clientes.push(cliente)
+
       });
     }).catch((error) => {
       console.log("Error al obtener los documentos:", error);
