@@ -4,7 +4,7 @@ import { retry } from "rxjs"
 export class Inscripcion{
     fecha!: Date | null
     fechaFinal!: Date | null
-    cliente!: DocumentReference | undefined
+    cliente!: DocumentReference
     precios!: DocumentReference | undefined | null
     subTotal!:any 
     isv!: number 

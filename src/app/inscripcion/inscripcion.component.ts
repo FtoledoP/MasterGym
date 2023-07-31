@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Inscripcion } from '../models/inscripcion';
 import { Cliente } from '../models/cliente';
-import { DocumentReference, DocumentSnapshot, addDoc, collection, getDoc, getDocs, query } from 'firebase/firestore';
+import { DocumentData, DocumentReference, DocumentSnapshot, addDoc, collection, doc, getDoc, getDocs, query } from 'firebase/firestore';
 import { Firestore } from '@angular/fire/firestore';
 import { Precio } from '../models/precio';
 import { MensajesService } from '../services/mensajes.service';
@@ -50,7 +50,8 @@ export class InscripcionComponent {
 
   eliminarCliente(){
     this.clienteSeleccionado = new Cliente()
-    this.inscripcion.cliente = undefined
+    const clienteVacioRef: DocumentReference<DocumentData> = doc(collection(this.db, 'clientes'), 'documento_vacio');
+    this.inscripcion.cliente = clienteVacioRef;
   }
 
   guardar(){
