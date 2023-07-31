@@ -85,6 +85,7 @@ export class PreciosComponent {
       this.msj.mensajeCorrecto("Editado", "Se edito correctamente")
       this.formularioPrecio.reset()
       this.esEditar = false
+      this.mostrarPrecios()
     })
     .catch(()=>{
       this.msj.mensajeError("Error!", "Ocurrio un error")

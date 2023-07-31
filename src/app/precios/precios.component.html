@@ -1,16 +1,32 @@
 <div class="container mt-5">
     <div class="row">
         <div class="col-sm-8">
-            <h4>Precios</h4>
-            <ul>
+            <h1>Precios</h1>
+            <!-- <ul>
                 <li *ngFor="let precio of precios" (click)="editarPrecio(precio)">
                     {{precio.nombre}} id: {{precio.id}}
                 </li>
-            </ul>
+            </ul> -->
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Precio</th>
+                        <th scope="col">Id</th>
+                    </tr>
+                </thead>
+                <tbody *ngFor="let precio of precios" (click)="editarPrecio(precio)">
+                    <tr>
+                        <th scope="row">{{precio.nombre}}</th>
+                        <td>{{precio.costo | currency:"CLP "}}</td>
+                        <td>{{precio.id}}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
         <div class="col-sm-4">
             <h4>Agregar/Editar</h4>
-            <form [formGroup]="formularioPrecio">
+            <form [formGroup]="formularioPrecio" class="form-control">
                 <div class="form-group">
                     <label for="">Nombre</label>
                     <input formControlName="nombre" type="text" class="form-control">

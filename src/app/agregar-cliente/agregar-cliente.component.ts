@@ -66,6 +66,7 @@ export class AgregarClienteComponent {
     console.log(this.formularioCliente.value);
     addDoc(collection(this.db, 'clientes'), this.formularioCliente.value)
     .then((resultado) =>{
+      this.formularioCliente.reset()
       this.msj.mensajeCorrecto("Agregar", "Se agrego correctamente")
     })
   }
