@@ -5,6 +5,7 @@ import { ref, uploadBytesResumable, UploadTaskSnapshot, getDownloadURL } from 'f
 import { Firestore } from '@angular/fire/firestore';
 import { addDoc, collection, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { ActivatedRoute } from '@angular/router';
+import Swal from 'sweetalert2'
 
 @Component({
   selector: 'app-agregar-cliente',
@@ -63,7 +64,12 @@ export class AgregarClienteComponent {
     console.log(this.formularioCliente.value);
     addDoc(collection(this.db, 'clientes'), this.formularioCliente.value)
     .then((resultado) =>{
-      console.log("Registrado");
+      Swal.fire({
+        title: 'Agregado',
+        text: 'Se agrego correctamente',
+        icon: 'success',
+        confirmButtonText: 'OK'
+      })
     })
   }
 
@@ -73,6 +79,23 @@ export class AgregarClienteComponent {
 
     const docRef = doc(this.db, 'clientes', this.id)
     updateDoc(docRef, this.formularioCliente.value)
+    .then((resultado) => {
+      Swal.fire({
+        title: 'Editado',
+        text: 'Cliente editado correctamente',
+        icon: 'success',
+        confirmButtonText: 'OK'
+      })
+      
+    })
+    .catch(()=>{
+      Swal.fire({
+        title: 'Error!',
+        text: 'Ocurrio un error al actualizar el cliente',
+        icon: 'error',
+        confirmButtonText: 'OK'
+      })
+    })
   }
 
   subirImagen(evento: any) {
