@@ -1,49 +1,80 @@
 <div class="container mt-5">
-    <form action="">
+    <form [formGroup]="formularioCliente" action="">
         <div class="row">
             <div class="col-sm-4">
                 <div class="form-group">
                     <label for="">Nombre</label>
-                    <input type="text" class="form-control" placeholder="Agregue el nombre">
+                    <input type="text" class="form-control" formControlName="nombre" placeholder="Agregue el nombre">
+                    <div *ngIf="formularioCliente.controls['nombre'].invalid && formularioCliente.controls['nombre'].dirty" class="alert alert-danger mt-3" role="alert">
+                        <span *ngIf="formularioCliente.controls['nombre'].errors?.['required']">
+                            Nombre es requerido
+                        </span>
+                    </div>
                 </div>
             </div>
             <div class="col-sm-4">
                 <div class="form-group">
                     <label for="">Apellido</label>
-                    <input type="text" class="form-control" placeholder="Agregue el apellido">
+                    <input type="text" class="form-control" formControlName="apellido" placeholder="Agregue el apellido">
+                    <div *ngIf="formularioCliente.controls['apellido'].invalid && formularioCliente.controls['apellido'].dirty" class="alert alert-danger mt-3" role="alert">
+                        <span *ngIf="formularioCliente.controls['apellido'].errors?.['required']">
+                            Apellido es requerido
+                        </span>
+                    </div>
                 </div>
             </div>
             <div class="col-sm-4">
                 <div class="form-group">
                     <label for="">Correo</label>
-                    <input type="text" class="form-control" placeholder="Ej: mastergym@gmail.com">
+                    <input type="text" class="form-control" formControlName="correo" placeholder="Ej: mastergym@gmail.com">
+                    <div *ngIf="formularioCliente.controls['correo'].invalid && formularioCliente.controls['correo'].dirty" class="alert alert-danger mt-3" role="alert">
+                        <span *ngIf="formularioCliente.controls['correo'].errors?.['required']">
+                            Correo es requerido
+                        </span>
+                        <span *ngIf="formularioCliente.controls['correo'].errors?.['email']">
+                            Correo no es valido
+                        </span>
+                    </div>
                 </div>
             </div>
             <div class="col-sm-4">
                 <div class="form-group">
                     <label for="">Cedula</label>
-                    <input type="text" class="form-control" placeholder="Agregue una cedula">
+                    <input type="text" class="form-control" formControlName="cedula" placeholder="Agregue una cedula">
                 </div>
             </div>
             <div class="col-sm-4">
                 <div class="form-group">
                     <label for="">Fecha de nacimiento</label>
-                    <input type="date" class="form-control" placeholder="Agregue una fecha de nacimiento">
+                    <input type="date" class="form-control" formControlName="fechaNacimiento" placeholder="Agregue una fecha de nacimiento">
+                    <div *ngIf="formularioCliente.controls['fechaNacimiento'].invalid && formularioCliente.controls['fechaNacimiento'].dirty" class="alert alert-danger mt-3" role="alert">
+                        <span *ngIf="formularioCliente.controls['fechaNacimiento'].errors?.['required']">
+                            Fecha de nacimiente es requerida
+                        </span>
+                    </div>
                 </div>
             </div>
             <div class="col-sm-4">
                 <div class="form-group">
                     <label for="">Numero de telefono</label>
-                    <input type="tel" class="form-control" placeholder="Agregue un numero de telefono">
+                    <input type="tel" class="form-control" formControlName="telefono" placeholder="Agregue un numero de telefono">
                 </div>
             </div>
             <div class="col-sm-12 mt-3">
                 <div class="form-group">
                     <label for="">Imagen</label>
-                    <input type="file" class="form-control-file" placeholder="Agregue su imagen">
+                    <input (change)="subirImagen($event)" type="file" class="form-control-file" formControlName="imgUrl" placeholder="Agregue su imagen">
+                    <div *ngIf="formularioCliente.controls['imgUrl'].invalid && formularioCliente.controls['imgUrl'].dirty" class="alert alert-danger mt-3" role="alert">
+                        <span *ngIf="formularioCliente.controls['imgUrl'].errors?.['required']">
+                            La imagen es requerida
+                        </span>
+                    </div>
                 </div>
             </div>
-            <button class="btn btn-primary mt-5">Agregar</button>
+            <div class="col-sm-12 mt-3">
+                <progressbar [value]="22" type="danger" [striped]="true">22%</progressbar>
+            </div>
+            <button class="btn btn-primary mt-5" [disabled]="formularioCliente.invalid" (click)="agregar()">Agregar</button>
         </div>
     </form>
 </div>

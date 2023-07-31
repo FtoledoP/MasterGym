@@ -24,6 +24,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ListadoClientesComponent } from './listado-clientes/listado-clientes.component';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { AgregarClienteComponent } from './agregar-cliente/agregar-cliente.component';
+import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 
 
 @NgModule({
@@ -54,7 +55,8 @@ import { AgregarClienteComponent } from './agregar-cliente/agregar-cliente.compo
     BrowserAnimationsModule,
     BsDropdownModule.forRoot(),
     FormsModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    ProgressbarModule.forRoot()
   ],
   providers: [
     ScreenTrackingService,UserTrackingService
