@@ -1,5 +1,5 @@
-import { Component, inject } from '@angular/core';
-import { Firestore, collectionData, collection } from '@angular/fire/firestore';
+import { Component } from '@angular/core';
+import { Firestore, collection, query, getDocs, DocumentSnapshot, collectionData } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -14,30 +14,28 @@ export class ListadoClientesComponent {
   }
 
   ngOnInit() {
-    // this.leerClientes().subscribe((resultado) => {
-    //   console.log(resultado)
-    //   this.clientes = resultado
-    // })
 
-
-    this.clientes.length = 0
-    const coleccionClientes = collection(this.firestore, 'clientes');
-    collectionData(coleccionClientes, {idField: 'id'}).subscribe((resultado) =>{
-      console.log(resultado)
-
-      for (let item of resultado){
-        console.log(item['id']);
-        
-      }
-
+    this.leerClientes().subscribe((resultado) => {
+      //console.log(resultado)
+      this.clientes = resultado
     })
 
+    this.clientes.length = 0;
+    const coleccionClientes = collection(this.firestore, 'clientes');
+    const q = query(coleccionClientes);
 
+    getDocs(q).then((querySnapshot) => {
+      querySnapshot.forEach((doc: DocumentSnapshot<any>) => {
+        //console.log(doc.data);
+        console.log(doc.ref);
+      });
+    }).catch((error) => {
+      console.log("Error al obtener los documentos:", error);
+    });
   }
 
   leerClientes(): Observable<any[]>{
     const coleccionClientes = collection(this.firestore, 'clientes');
     return collectionData(coleccionClientes) as Observable<any[]>
   }
-
 }
