@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { Inscripcion } from '../models/inscripcion';
 import { Cliente } from '../models/cliente';
-import { DocumentReference, DocumentSnapshot, collection, getDoc, getDocs, query } from 'firebase/firestore';
+import { DocumentReference, DocumentSnapshot, addDoc, collection, getDoc, getDocs, query } from 'firebase/firestore';
 import { Firestore } from '@angular/fire/firestore';
 import { Precio } from '../models/precio';
+import { MensajesService } from '../services/mensajes.service';
 
 @Component({
   selector: 'app-inscripcion',
@@ -15,8 +16,10 @@ export class InscripcionComponent {
   clienteSeleccionado:Cliente = new Cliente()
   precios: Precio[] = new Array <Precio>()
   precioSeleccionado?: Precio = new Precio()
+  idPrecio:string = 'null'
 
-  constructor(private db: Firestore){
+  constructor(private db: Firestore,
+    private msj:MensajesService){
 
   }
 
@@ -51,61 +54,93 @@ export class InscripcionComponent {
   }
 
   guardar(){
-    console.log(this.inscripcion);
+    if(this.inscripcion.validar().esValido){
+      let inscripcionAgregar = {
+        fecha: this.inscripcion.fecha,
+        fechaFinal: this.inscripcion.fechaFinal,
+        cliente: this.inscripcion.cliente,
+        precios: this.inscripcion.precios,
+        subTotal: this.inscripcion.subTotal,
+        isv: this.inscripcion.isv,
+        total: this.inscripcion.total
+      }
+      const colInsc = collection(this.db, 'inscripciones')
+      addDoc(colInsc, inscripcionAgregar)
+      .then((resultado)=>{
+        this.inscripcion = new Inscripcion()
+        this.clienteSeleccionado = new Cliente()
+        this.precioSeleccionado = new Precio()
+        this.idPrecio = 'null'
+        this.msj.mensajeCorrecto("Guardado", "Se guardo correctamente")
+      })
+    }else{
+      this.msj.mensajeAdvertencia("Advertencia", this.inscripcion.validar().mensaje)
+      
+    }
+    
     
   }
 
   seleccionarPrecio(evento:any){
     let id = evento.target.value
+    if(id != null){
+      this.precioSeleccionado = this.precios.find(x=> x.id == id)
+      this.inscripcion.precios = this.precioSeleccionado?.ref
 
-    this.precioSeleccionado = this.precios.find(x=> x.id == id)
-    this.inscripcion.precios = this.precioSeleccionado?.ref
+      this.inscripcion.subTotal = this.precioSeleccionado?.costo
+      this.inscripcion.isv = this.inscripcion?.subTotal * 0.15
+      this.inscripcion.total = this.inscripcion.subTotal + this.inscripcion.isv
 
-    this.inscripcion.subTotal = this.precioSeleccionado?.costo
-    this.inscripcion.isv = this.inscripcion?.subTotal * 0.15
-    this.inscripcion.total = this.inscripcion.subTotal + this.inscripcion.isv
+      this.inscripcion.fecha = new Date()
 
-    this.inscripcion.fecha = new Date()
+      if(this.precioSeleccionado?.tipoDuracion == 1){
 
-    if(this.precioSeleccionado?.tipoDuracion == 1){
+        let dias: number = this.precioSeleccionado.duracion * 1
+        let fechaFinal = new Date(this.inscripcion.fecha.getFullYear(), this.inscripcion.fecha.getMonth(), this.inscripcion.fecha.getDate() + dias)
+        this.inscripcion.fechaFinal = fechaFinal
 
-      let dias: number = this.precioSeleccionado.duracion * 1
-      let fechaFinal = new Date(this.inscripcion.fecha.getFullYear(), this.inscripcion.fecha.getMonth(), this.inscripcion.fecha.getDate() + dias)
-      this.inscripcion.fechaFinal = fechaFinal
+      }
+      if(this.precioSeleccionado?.tipoDuracion == 2){
 
+        let dias: number = this.precioSeleccionado.duracion * 7
+        let fechaFinal = new Date(this.inscripcion.fecha.getFullYear(), this.inscripcion.fecha.getMonth(), this.inscripcion.fecha.getDate() + dias)
+        this.inscripcion.fechaFinal = fechaFinal
+        
+      }
+      if(this.precioSeleccionado?.tipoDuracion == 3){
+
+        let dias: number = this.precioSeleccionado.duracion * 15
+        let fechaFinal = new Date(this.inscripcion.fecha.getFullYear(), this.inscripcion.fecha.getMonth(), this.inscripcion.fecha.getDate() + dias)
+        this.inscripcion.fechaFinal = fechaFinal
+        
+      }
+      if(this.precioSeleccionado?.tipoDuracion == 4){
+        let anno = this.inscripcion.fecha.getFullYear()
+        let meses = this.inscripcion.fecha.getMonth() + this.precioSeleccionado.duracion
+        let dias = this.inscripcion.fecha.getDate()
+        let fechaFinal = new Date(anno, meses, dias)
+        this.inscripcion.fechaFinal = fechaFinal
+        
+      }
+      if(this.precioSeleccionado?.tipoDuracion == 5){
+
+        let anno = this.inscripcion.fecha.getFullYear() + this.precioSeleccionado.duracion
+        let meses = this.inscripcion.fecha.getMonth() 
+        let dias = this.inscripcion.fecha.getDate()
+        let fechaFinal = new Date(anno, meses, dias)
+        this.inscripcion.fechaFinal = fechaFinal
+        
+      }
+    }else{
+      this.precioSeleccionado = new Precio()
+      this.inscripcion.fecha = null
+      this.inscripcion.fechaFinal = null
+      this.inscripcion.precios = null
+      this.inscripcion.subTotal = 0
+      this.inscripcion.isv = 0
+      this.inscripcion.total = 0
     }
-    if(this.precioSeleccionado?.tipoDuracion == 2){
 
-      let dias: number = this.precioSeleccionado.duracion * 7
-      let fechaFinal = new Date(this.inscripcion.fecha.getFullYear(), this.inscripcion.fecha.getMonth(), this.inscripcion.fecha.getDate() + dias)
-      this.inscripcion.fechaFinal = fechaFinal
-      
-    }
-    if(this.precioSeleccionado?.tipoDuracion == 3){
-
-      let dias: number = this.precioSeleccionado.duracion * 15
-      let fechaFinal = new Date(this.inscripcion.fecha.getFullYear(), this.inscripcion.fecha.getMonth(), this.inscripcion.fecha.getDate() + dias)
-      this.inscripcion.fechaFinal = fechaFinal
-      
-    }
-    if(this.precioSeleccionado?.tipoDuracion == 4){
-      let anno = this.inscripcion.fecha.getFullYear()
-      let meses = this.inscripcion.fecha.getMonth() + this.precioSeleccionado.duracion
-      let dias = this.inscripcion.fecha.getDate()
-      let fechaFinal = new Date(anno, meses, dias)
-      this.inscripcion.fechaFinal = fechaFinal
-      
-    }
-    if(this.precioSeleccionado?.tipoDuracion == 5){
-
-      let anno = this.inscripcion.fecha.getFullYear() + this.precioSeleccionado.duracion
-      let meses = this.inscripcion.fecha.getMonth() 
-      let dias = this.inscripcion.fecha.getDate()
-      let fechaFinal = new Date(anno, meses, dias)
-      this.inscripcion.fechaFinal = fechaFinal
-      
-    }
-    
   }
 
 }
